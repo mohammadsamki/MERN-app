@@ -5,7 +5,8 @@ const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const userRoutes = require('./routes/userRoutes');
 const productRoutes = require('./routes/productsRoutes');
-
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 dotenv.config();
 
 const app = express();
