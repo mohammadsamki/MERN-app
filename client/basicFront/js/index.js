@@ -1,5 +1,4 @@
 var table = document.getElementById("myTable");
-console.log(table.children[1]);
 var addData = document.getElementById("addData");
 addData.addEventListener('submit', function(e) {
     e.preventDefault();
@@ -39,6 +38,7 @@ async function deleteUser(id){
 //  get the data (id,udername,phone) from the api
 //
 var allData = [];
+var updateId = ""
 
 async function getData() {
 await fetch('http://127.0.0.1:5001/api/users',{
@@ -62,7 +62,19 @@ await fetch('http://127.0.0.1:5001/api/users',{
         var cell4 = document.createElement("td");
         var cell5 = document.createElement("td");
         var updateButton = document.createElement("button")
+        updateButton.className="updateButton"
         updateButton.innerHTML="update"
+        updateButton.setAttribute('data-bs-toggle',"modal")
+        updateButton.setAttribute('data-bs-target',"#exampleModal")
+        updateButton.onclick=function(){
+            let username = document.getElementById("updateUsername");
+            let phone = document.getElementById("updatePhone");
+            let elementId = document.getElementById("updateId");
+            username.value=element.username;
+            phone.value=element.phone;
+            elementId.value = element._id;
+
+        }
         cell5.append(updateButton)
         var cell6 = document.createElement("td");
         var daleteButton = document.createElement("button")
@@ -94,5 +106,24 @@ await fetch('http://127.0.0.1:5001/api/users',{
 }
 getData()
 console.log(allData);
+var updateForm = document.getElementById("updateForm");
+updateForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    var id = document.getElementById("updateId").value;
+    var username = document.getElementById("updateUsername").value;
+    var phone = document.getElementById("updatePhone").value;
 
+    var updateData = {username:username,phone:phone}
+    fetch(`http://127.0.0.1:5001/api/users/${id}`,{
+        method:'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body:JSON.stringify(updateData)
+    }).then(response=>response.json()).then(
+        data=>{
+            console.log(data)
+        }
+    ).catch(error=>console.error('Error:', error));
+})
 
