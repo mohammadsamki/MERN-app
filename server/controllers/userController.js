@@ -90,9 +90,11 @@ exports.userLogin = async (req, res) => {
             expiresIn: '1h',
         });
         // res.json({ token });
+        console.log("done login");
         res.status(200).json({ message: "user found " ,  token});
 
     } catch (error) {
+        console.error(error);
         res.status(500).json({ error: error.message });
 
     }
@@ -121,7 +123,7 @@ exports.home = async (req,res) => {
     user = req.user;
     try{
         checkUser = await User.findById(user);
-        res.status(200).json({ message: "Welcome to home page " ,  user: checkUser.username,phone: checkUser.phone});
+        res.status(200).json({ message: "Welcome to home page " ,  user: checkUser});
     }
     catch(error){
         res.status(500).json({ message: 'error in home page' });

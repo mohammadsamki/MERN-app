@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema({
     username:{ type: String, required: true , unique: true  },
     phone:{ type: Number, required: true },
     password:{ type: String, required: true },
+    roul: { type: String, default: 'user',required: true }, // admin,user,seller
 })
 
 const User = mongoose.model('users',userSchema);
