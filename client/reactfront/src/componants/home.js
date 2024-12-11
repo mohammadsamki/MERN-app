@@ -5,11 +5,14 @@ import { useEffect, useState } from 'react';
 
 import { AppProvider } from '@toolpad/core/AppProvider';
 import BarChartIcon from '@mui/icons-material/BarChart';
+import DashBoard from './dashBoard';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import { DashboardLayout } from '@toolpad/core/DashboardLayout';
 import DescriptionIcon from '@mui/icons-material/Description';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import Grid from '@mui/material/Grid2';
 import LayersIcon from '@mui/icons-material/Layers';
+import Orders from './orders';
 import { PageContainer } from '@toolpad/core/PageContainer';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import axios from 'axios';
@@ -31,6 +34,11 @@ const demoTheme = extendTheme({
 
 function useDemoRouter(initialPath) {
   const [pathname, setPathname] = React.useState(initialPath);
+  if(pathname =='/LogOut'){
+    console.log('logging out')
+    sessionStorage.removeItem('jwt')
+    window.location.href = "/login"
+  }
 
   const router = React.useMemo(() => {
     return {
@@ -52,6 +60,16 @@ const Skeleton = styled('div')(({ theme, height }) => ({
 
 export default function Home(props) {
   const { window } = props;
+  const allPages  = [{
+    path:'/dashboard',
+    componant:<DashBoard />,
+  },
+  {
+    path:'/orders',
+    componant:<Orders />,
+  }
+];
+const [CurrentComponant,setCurrentComponant] = useState(allPages[0].componant);
   const [user, setUsers] = useState([]);
   const navigate = useNavigate();
   const [navigationDash, setNavigationDash] = useState([
@@ -70,10 +88,22 @@ export default function Home(props) {
       icon: <ShoppingCartIcon />,
     },
     {
-      kind: 'divider',
+      segment: 'LogOut',
+      title: 'LogOut',
+      icon: <ExitToAppIcon onClick={()=>{
+        console.log('logout');
+      }} />,
     },
 
+
+
   ]);
+  const handelLogOut = ()=>{
+    sessionStorage.removeItem('jwt');
+    navigate('/login')
+  }
+  const router = useDemoRouter('/dashboard');
+
   useEffect(()=>{
     // alert('fetching users');
     // if (!sessionStorage.getItem('jwt')){
@@ -138,9 +168,21 @@ export default function Home(props) {
                           title: 'Integrations',
                           icon: <LayersIcon />,
                         },
-                      ]
+                        {
+                          segment: 'LogOut',
+                          title: 'LogOut',
+                          onClick:handelLogOut,
+                          icon: <div onClick={()=>{console.log('logOut')}}>
+                            <ExitToAppIcon />
+                          </div>,
+
+
+                        },
+                      ],
+
                 )
             }
+
         }
         catch(err){
             console.log(err);
@@ -149,58 +191,13 @@ export default function Home(props) {
             }
         }
     }
-    // console.log(token);
 
     validateToken()
+    console.log(router)
+    setCurrentComponant(allPages.find((page) => page.path === router.pathname)?.componant)
 
-   },[user])
-//    const NAVIGATION = [
-//     {
-//       kind: 'header',
-//       title: 'Main items',
-//     },
-//     {
-//       segment: 'dashboard',
-//       title: 'Dashboard',
-//       icon: <DashboardIcon />,
-//     },
-//     {
-//       segment: 'orders',
-//       title: 'Orders',
-//       icon: <ShoppingCartIcon />,
-//     },
-//     {
-//       kind: 'divider',
-//     },
-//     {
-//       kind: 'header',
-//       title: 'Analytics',
-//     },
-//     {
-//       segment: 'reports',
-//       title: 'Reports',
-//       icon: <BarChartIcon />,
-//       children: [
-//         {
-//           segment: 'sales',
-//           title: 'Sales',
-//           icon: <DescriptionIcon />,
-//         },
-//         {
-//           segment: 'traffic',
-//           title: 'Traffic',
-//           icon: <DescriptionIcon />,
-//         },
-//       ],
-//     },
-//     {
-//       segment: 'integrations',
-//       title: 'Integrations',
-//       icon: <LayersIcon />,
-//     },
-//   ];
+   },[router])
 
-  const router = useDemoRouter('/dashboard');
 
   // Remove this const when copying and pasting into your project.
   const demoWindow = window ? window() : undefined;
@@ -214,43 +211,10 @@ export default function Home(props) {
     >
       <DashboardLayout>
         <PageContainer>
-          <Grid container spacing={1}>
-            <h1>{user.roul} </h1>
-            <Grid size={5} />
-            <Grid size={12}>
-              <Skeleton height={14} />
-            </Grid>
-            <Grid size={12}>
-              <Skeleton height={14} />
-            </Grid>
-            <Grid size={4}>
-              <Skeleton height={100} />
-            </Grid>
-            <Grid size={8}>
-              <Skeleton height={100} />
-            </Grid>
-
-            <Grid size={12}>
-              <Skeleton height={150} />
-            </Grid>
-            <Grid size={12}>
-              <Skeleton height={14} />
-            </Grid>
-
-            <Grid size={3}>
-              <Skeleton height={100} />
-            </Grid>
-            <Grid size={3}>
-              <Skeleton height={100} />
-            </Grid>
-            <Grid size={3}>
-              <Skeleton height={100} />
-            </Grid>
-            <Grid size={3}>
-              <Skeleton height={100} />
-            </Grid>
-          </Grid>
+          {CurrentComponant}
         </PageContainer>
+
+
       </DashboardLayout>
     </AppProvider>
   );
