@@ -10,6 +10,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import { DashboardLayout } from '@toolpad/core/DashboardLayout';
 import DescriptionIcon from '@mui/icons-material/Description';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import FullFeaturedCrudGrid from './user';
 import Grid from '@mui/material/Grid2';
 import LayersIcon from '@mui/icons-material/Layers';
 import Orders from './orders';
@@ -67,7 +68,11 @@ export default function Home(props) {
   {
     path:'/orders',
     componant:<Orders />,
-  }
+  },
+  {
+    path:'/users',
+    componant:<FullFeaturedCrudGrid />,
+  },
 ];
 const [CurrentComponant,setCurrentComponant] = useState(allPages[0].componant);
   const [user, setUsers] = useState([]);
@@ -81,6 +86,11 @@ const [CurrentComponant,setCurrentComponant] = useState(allPages[0].componant);
       segment: 'dashboard',
       title: 'Dashboard',
       icon: <DashboardIcon />,
+    },
+    {
+      segment: 'orders',
+      title: 'Orders',
+      icon: <ShoppingCartIcon />,
     },
     {
       segment: 'orders',
@@ -137,6 +147,11 @@ const [CurrentComponant,setCurrentComponant] = useState(allPages[0].componant);
                         {
                           segment: 'orders',
                           title: 'Orders',
+                          icon: <ShoppingCartIcon />,
+                        },
+                        {
+                          segment: 'users',
+                          title: 'Users',
                           icon: <ShoppingCartIcon />,
                         },
                         {
@@ -213,7 +228,7 @@ const [CurrentComponant,setCurrentComponant] = useState(allPages[0].componant);
         <PageContainer>
           {CurrentComponant}
         </PageContainer>
-       
+
 
       </DashboardLayout>
     </AppProvider>
