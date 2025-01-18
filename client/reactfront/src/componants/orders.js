@@ -34,7 +34,7 @@ export default function Orders() {
     const fetchCart = async () => {
       const token = sessionStorage.getItem('jwt');
       try {
-        const res = await axios.get('http://127.0.0.1:5001/api/getCart',
+        const res = await axios.get('https://mern-app-4mhj.onrender.com/api/getCart',
           {
             headers:{
               'Auth': 'Bearer '+token

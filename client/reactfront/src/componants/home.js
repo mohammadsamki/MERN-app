@@ -124,7 +124,7 @@ const [CurrentComponant,setCurrentComponant] = useState(allPages[0].componant);
 
     const validateToken = async ()=>{
         try{
-            const res = await axios.get('http://127.0.0.1:5001/api/home',{
+            const res = await axios.get('https://mern-app-4mhj.onrender.com/api/home',{
                 headers: {
                     'Auth': 'Bearer '+token
                 }

@@ -17,7 +17,7 @@ const [userData,setUserDate]= useState(null);
 const LoginHandler= async (e)=>{
     e.preventDefault();
     try{
-        const res = await axios.post('http://127.0.0.1:5001/api/login',{username,password});
+        const res = await axios.post('https://mern-app-4mhj.onrender.com/api/login',{username,password});
         setToken(res.data.token);
         console.log(res.data.token);
         alert('login done');
